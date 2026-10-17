@@ -1,0 +1,26 @@
+{
+  "name": "claude-providers",
+  "version": "1.0.0",
+  "description": "Point the Claude Desktop app, Claude Code and DeepSeek Harness at OpenRouter, Hugging Face or the Xiaomi MiMo endpoint — and revert to the claude.ai login. Ships the PowerShell scripts plus a test suite that proves the writes are reversible.",
+  "author": {
+    "name": "miztizm",
+    "url": "https://github.com/miztizm"
+  },
+  "homepage": "https://github.com/miztizm/claude-providers",
+  "repository": "https://github.com/miztizm/claude-providers",
+  "license": "MIT",
+  "keywords": [
+    "claude-desktop",
+    "claude-code",
+    "openrouter",
+    "huggingface",
+    "provider",
+    "gateway",
+    "deepseek-harness",
+    "windows"
+  ],
+  "navig": {
+    "tier": "free",
+    "skills": ["skills/claude-providers"]
+  }
+}

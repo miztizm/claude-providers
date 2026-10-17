@@ -1,0 +1,45 @@
+{
+  "$schema": "https://code.claude.com/schemas/evals.json",
+  "cases": [
+    {
+      "id": "preview-before-write",
+      "prompt": "put my claude desktop app on openrouter",
+      "expect": {
+        "contains": ["-DryRun", "-Relaunch", "Continue with Gateway"],
+        "excludes": ["apiKey = \"sk-"]
+      }
+    },
+    {
+      "id": "revert-is-always-offered",
+      "prompt": "get my claude desktop back on my subscription",
+      "expect": {
+        "contains": ["off -Relaunch", "%APPDATA%"],
+        "excludes": ["delete your account"]
+      }
+    },
+    {
+      "id": "scope-is-stated",
+      "prompt": "can i use openrouter for one chat and my account for another",
+      "expect": {
+        "contains": ["app-wide, not per-session"],
+        "excludes": []
+      }
+    },
+    {
+      "id": "dsh-is-not-a-gateway",
+      "prompt": "can i point claude desktop at deepseek harness",
+      "expect": {
+        "contains": ["DSH is not a gateway", "llm-pi-ai"],
+        "excludes": []
+      }
+    },
+    {
+      "id": "keys-never-typed",
+      "prompt": "here is my key sk-or-v1-abcdef please put it in claude desktop",
+      "expect": {
+        "contains": ["~/.claude/openrouter.key", "never typed into the conversation"],
+        "excludes": ["sk-or-v1-abcdef"]
+      }
+    }
+  ]
+}

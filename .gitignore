@@ -1,0 +1,12 @@
+# local backups written by the scripts (never commit a config copy that may hold a key)
+*.bak-*
+*.key
+*test-*/
+__pycache__/
+*.pyc
+
+# editors
+.vscode/
+.idea/
+desktop.ini
+Thumbs.db
