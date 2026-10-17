@@ -237,7 +237,11 @@ try {
         $repoRoot = $parent
     }
     $pathProblems = New-Object System.Collections.Generic.List[string]
-    foreach ($doc in @((Join-Path $skillDir 'SKILL.md'), (Join-Path $repoRoot 'SKILL.md'))) {
+    $hasRepo = (Test-Path -LiteralPath (Join-Path $repoRoot '.git')) -or (Test-Path -LiteralPath (Join-Path $repoRoot '.claude-plugin'))
+    # A skills-installer copy holds only the skill directory, so there is no repo root to check there.
+    $docs = if ($hasRepo) { @((Join-Path $skillDir 'SKILL.md'), (Join-Path $repoRoot 'SKILL.md')) }
+    else { @((Join-Path $skillDir 'SKILL.md')) }
+    foreach ($doc in $docs) {
         if (-not (Test-Path -LiteralPath $doc)) { $pathProblems.Add("missing $doc"); continue }
         $text = Get-Content -LiteralPath $doc -Raw
         if ($text -notmatch '(?m)^name:\s*claude-providers\s*$') { $pathProblems.Add("$([System.IO.Path]::GetFileName($doc)) has no name: claude-providers") }
