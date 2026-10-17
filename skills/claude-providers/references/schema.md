@@ -1,9 +1,8 @@
 # The on-disk contract
 
-Everything below was recovered from the shipped app bundle (Claude Desktop 2.26454.2,
-`resources/app.asar`) and from the DSH loader schema delivered by this host — not from public
-documentation. Treat it as the contract the scripts target, and re-check it after a Claude Desktop
-major update.
+Everything below was recovered by inspecting the shipped app bundle and the loader schema delivered
+by the host at the time of writing — not from public documentation. Treat it as the contract the
+scripts target, and re-check it after a Claude Desktop major update.
 
 ## 1. Claude Desktop — third-party inference
 

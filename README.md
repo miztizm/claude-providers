@@ -69,6 +69,16 @@ What the suite proves — and the one thing it cannot (the app accepting the doc
 recovery path — is in
 [`references/verification.md`](skills/claude-providers/references/verification.md).
 
+## Privacy
+
+- **No telemetry, no analytics, no network calls of the scripts' own.** They read and write local
+  config files and nothing else.
+- **No keys in this repository.** Keys stay in `~/.claude/openrouter.key`, `hf.key`, `mimo.key`
+  (git-ignored if you clone into a repo); previews mask them, and the test suite uses fake ones.
+- **No personal paths, hostnames or account ids in the shipped files** — everything addresses
+  `$env:USERPROFILE`, `$env:LOCALAPPDATA` and `$env:TEMP`.
+- The only identity in the repo is the author/publisher handle in the manifests' links.
+
 ## Safety notes
 
 - **The provider choice is app-wide, not per-session.** Per session you change the *model* only.

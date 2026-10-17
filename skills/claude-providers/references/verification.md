@@ -1,7 +1,8 @@
 # What is verified, and the one thing that is not
 
 `scripts/test-scripts.ps1` is the gate. It writes **only** inside a temp directory, launches no app,
-and quits nothing. 11 checks, all passing on Windows 11 / PowerShell 7 / Claude Desktop 2.26454.2.
+and quits nothing. 11 checks, all passing on Windows / PowerShell 7 against a current Claude Desktop
+build.
 
 | # | Check | What it proves |
 | --- | --- | --- |

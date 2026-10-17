@@ -224,6 +224,10 @@ try {
     # ./SKILL.md (NAVIG `skill:owner/repo` copies the repo root). Every path either document names
     # must exist from at least one of those roots.
     $skillDir = Split-Path -Parent $here
+    # Installed copies are usually junctions/symlinks into the repo (Claude, Codex, Cursor, DSH).
+    # Resolve to the real directory first, otherwise walking up from the link finds no repo root.
+    $skillItem = Get-Item -LiteralPath $skillDir -Force -ErrorAction SilentlyContinue
+    if ($skillItem -and $skillItem.Target) { $skillDir = @($skillItem.Target)[0] }
     # Walk up to the repo root (the dir holding .git or .claude-plugin), so the layout can move.
     $repoRoot = $skillDir
     while ($repoRoot -and -not (Test-Path -LiteralPath (Join-Path $repoRoot '.git')) -and
