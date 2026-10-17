@@ -9,7 +9,7 @@
       "name": "claude-providers",
       "source": "./",
       "description": "Switch the Claude Desktop app, Claude Code and DeepSeek Harness between OpenRouter, Hugging Face, Xiaomi MiMo and the claude.ai login — with a verified revert path.",
-      "version": "1.0.0"
+      "version": "1.0.1"
     }
   ]
 }
