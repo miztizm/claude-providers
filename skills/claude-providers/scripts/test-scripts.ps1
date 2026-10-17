@@ -219,6 +219,33 @@ try {
     $ok = ($wrapperOut -match 'or-toggle') -and ($wrapperOut -match 'would run')
     Add-Result '9. code-desktop.ps1 dry-run' $ok ''
 
+    # ------------------------------------------------------------------ 10. skill paths resolve
+    # Two entry points: skills/claude-providers/SKILL.md (Claude Code, skills.sh, plugin loader) and
+    # ./SKILL.md (NAVIG `skill:owner/repo` copies the repo root). Every path either document names
+    # must exist from at least one of those roots.
+    $skillDir = Split-Path -Parent $here
+    # Walk up to the repo root (the dir holding .git or .claude-plugin), so the layout can move.
+    $repoRoot = $skillDir
+    while ($repoRoot -and -not (Test-Path -LiteralPath (Join-Path $repoRoot '.git')) -and
+        -not (Test-Path -LiteralPath (Join-Path $repoRoot '.claude-plugin'))) {
+        $parent = Split-Path -Parent $repoRoot
+        if ($parent -eq $repoRoot -or -not $parent) { break }
+        $repoRoot = $parent
+    }
+    $pathProblems = New-Object System.Collections.Generic.List[string]
+    foreach ($doc in @((Join-Path $skillDir 'SKILL.md'), (Join-Path $repoRoot 'SKILL.md'))) {
+        if (-not (Test-Path -LiteralPath $doc)) { $pathProblems.Add("missing $doc"); continue }
+        $text = Get-Content -LiteralPath $doc -Raw
+        if ($text -notmatch '(?m)^name:\s*claude-providers\s*$') { $pathProblems.Add("$([System.IO.Path]::GetFileName($doc)) has no name: claude-providers") }
+        $refs = [regex]::Matches($text, '[A-Za-z0-9_./-]*(?:scripts|references)/[A-Za-z0-9_.-]+\.(?:ps1|psm1|md)') |
+            ForEach-Object { $_.Value } | Sort-Object -Unique
+        foreach ($r in $refs) {
+            $resolved = (Test-Path -LiteralPath (Join-Path $skillDir $r)) -or (Test-Path -LiteralPath (Join-Path $repoRoot $r))
+            if (-not $resolved) { $pathProblems.Add("$([System.IO.Path]::GetFileName($doc)) -> $r not found") }
+        }
+    }
+    Add-Result '10. skill entry points + paths resolve' ($pathProblems.Count -eq 0) ($pathProblems -join '; ')
+
     # ------------------------------------------------------------------ summary
     $failed = @($results | Where-Object { -not $_.Ok })
     Write-Host ''

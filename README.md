@@ -61,7 +61,7 @@ Details per installer: [`skills/claude-providers/references/install.md`](skills/
 ## Verify
 
 ```powershell
-pwsh -NoProfile -File skills/claude-providers/scripts/test-scripts.ps1   # 10/10, temp dir only
+pwsh -NoProfile -File skills/claude-providers/scripts/test-scripts.ps1   # 11/11, temp dir only
 navig skill lint skills\claude-providers
 ```
 
@@ -84,6 +84,7 @@ recovery path — is in
 
 ```
 .claude-plugin/{plugin.json,marketplace.json}   Claude Code + NAVIG plugin manifests
+SKILL.md                                        root entry point (NAVIG `skill:owner/repo`)
 skills/claude-providers/                        SKILL.md, evals.json, scripts/, references/
 install.ps1                                     junction/copy into Claude, Codex, Cursor, DSH, NAVIG
 ```

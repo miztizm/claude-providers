@@ -1,7 +1,7 @@
 # What is verified, and the one thing that is not
 
 `scripts/test-scripts.ps1` is the gate. It writes **only** inside a temp directory, launches no app,
-and quits nothing. 10 checks, all passing on Windows 11 / PowerShell 7 / Claude Desktop 2.26454.2.
+and quits nothing. 11 checks, all passing on Windows 11 / PowerShell 7 / Claude Desktop 2.26454.2.
 
 | # | Check | What it proves |
 | --- | --- | --- |
@@ -15,6 +15,7 @@ and quits nothing. 10 checks, all passing on Windows 11 / PowerShell 7 / Claude 
 | 7b | empty profile | a `[]` patch file becomes a single YAML root, comments preserved; revert restores `[]` |
 | 8 | real state | `%LOCALAPPDATA%\Claude-3p`, `~/.claude/settings.json` and every `~/.dsh/profiles/*/cordis.patch.yml` hash identical before/after |
 | 9 | wrapper | `code-desktop.ps1 -DryRun` touches nothing |
+| 10 | entry points | both `SKILL.md` files (repo root and `skills/claude-providers/`) declare `name: claude-providers`, and every `scripts/…` / `references/…` path either document mentions resolves from at least one of those roots |
 
 ## The gap: the app accepting the document
 

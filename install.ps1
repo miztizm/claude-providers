@@ -8,8 +8,8 @@
 # Existing destinations are never deleted silently: they are moved aside with a .bak-<stamp> suffix.
 [CmdletBinding()]
 param(
-    [ValidateSet('claude', 'codex', 'cursor', 'dsh', 'navig')]
-    [string[]]$Target = @('claude'),
+    # Comma-separated, so both `-Target claude,codex` (pwsh -File) and `-Target claude -Target codex` work.
+    [string]$Target = 'claude',
 
     [switch]$Copy,
 
@@ -18,6 +18,15 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+
+$allowed = @('claude', 'codex', 'cursor', 'dsh', 'navig')
+$Targets = @($Target -split '[,; ]+' | Where-Object { $_ })
+foreach ($t in $Targets) {
+    if ($allowed -notcontains $t) {
+        throw ("unknown target '{0}'. Pick from: {1}" -f $t, ($allowed -join ', '))
+    }
+}
+if ($Targets.Count -eq 0) { $Targets = @('claude') }
 
 function Get-Dest([string]$Name) {
     switch ($Name) {
@@ -36,7 +45,7 @@ if (-not (Test-Path -LiteralPath (Join-Path $Source 'SKILL.md'))) {
 }
 $Source = (Resolve-Path -LiteralPath $Source).Path
 
-foreach ($t in $Target) {
+foreach ($t in $Targets) {
     $root = Get-Dest $t
     if (-not (Test-Path -LiteralPath $root)) { New-Item -ItemType Directory -Path $root -Force | Out-Null }
 
@@ -68,7 +77,7 @@ foreach ($t in $Target) {
         }
     }
 
-    $ok = Test-Path -LiteralPath (Join-Path $dest 'SKILL.md') -or (Test-Path -LiteralPath (Join-Path $dest 'skills\claude-providers\SKILL.md'))
+    $ok = (Test-Path -LiteralPath (Join-Path $dest 'SKILL.md')) -or (Test-Path -LiteralPath (Join-Path $dest 'skills\claude-providers\SKILL.md'))
     Write-Host ("  [{0}] {1}" -f $(if ($ok) { 'ok' } else { 'MISSING SKILL.md' }), $dest) -ForegroundColor $(if ($ok) { 'Green' } else { 'Red' })
 }
 
